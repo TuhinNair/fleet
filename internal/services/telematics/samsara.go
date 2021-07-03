@@ -42,6 +42,7 @@ func (s *samsara) do(req *http.Request) (*http.Response, error) {
 
 func (s *samsara) getRequestWithTimeout(urlName URLName, timeout time.Duration) (*http.Request, context.CancelFunc, error) {
 	url := s.endpoint(urlName)
+	log.Println("url:" + url)
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -69,7 +70,7 @@ func (s *samsara) VehiclesSnapshot() ([]*VehiclesData, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Println("read response body")
+	log.Printf("read response body: %s\n", string(body))
 
 	return s.unmarshalVehiclesSnapshot(body)
 }
