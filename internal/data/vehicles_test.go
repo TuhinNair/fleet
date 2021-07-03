@@ -81,14 +81,14 @@ func TestVehiclesDataSource(t *testing.T) {
 				var res Vehicle
 				rows.Scan(&res.ID, &res.Latitude)
 				if res.ID != "1" {
-					t.Fatal("unexpected vehicle id after update")
+					t.Fatalf("unexpected vehicle id after update. Got=%s,Expected=%s", res.ID, "1")
 				}
 				if res.Latitude != "99.00" {
-					t.Fatal("unexpected vehicle latitude after update")
+					t.Fatalf("unexpected vehicle latitude after update. Got=%s,Expected=%s", res.Latitude, "99.00")
 				}
 			}
 			if numRows != 1 {
-				t.Fatalf("update was unsuccessfult. Unexpected number of result rows. Got=%d,Expected=%d", numRows, 1)
+				t.Fatalf("update was unsuccessful. Unexpected number of result rows. Got=%d,Expected=%d", numRows, 1)
 			}
 		},
 	}
