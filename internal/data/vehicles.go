@@ -3,7 +3,6 @@ package data
 import (
 	"context"
 	"database/sql"
-	"log"
 	"time"
 )
 
@@ -81,7 +80,6 @@ func (m VehicleModel) Insert(v *Vehicle) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	log.Println("about to insert yo")
 	_, err := m.db.ExecContext(ctx, query, args...)
 	if err != nil {
 		return err

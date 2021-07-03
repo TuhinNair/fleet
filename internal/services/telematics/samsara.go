@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 )
@@ -36,13 +35,11 @@ func (s *samsara) endpoint(name URLName) string {
 func (s *samsara) do(req *http.Request) (*http.Response, error) {
 	bearer := "Bearer " + s.apiToken
 	req.Header.Add("Authorization", bearer)
-	log.Println("about to do request")
 	return s.client.Do(req)
 }
 
 func (s *samsara) getRequestWithTimeout(urlName URLName, timeout time.Duration) (*http.Request, context.CancelFunc, error) {
 	url := s.endpoint(urlName)
-	log.Println("url:" + url)
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -53,7 +50,6 @@ func (s *samsara) getRequestWithTimeout(urlName URLName, timeout time.Duration) 
 }
 
 func (s *samsara) VehiclesSnapshot() ([]*VehiclesData, error) {
-	log.Println("about to build request")
 	req, cancel, err := s.getRequestWithTimeout(VehiclesSnapshot, 30*time.Second)
 	if err != nil {
 		return nil, err
@@ -70,7 +66,6 @@ func (s *samsara) VehiclesSnapshot() ([]*VehiclesData, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("read response body: %s\n", string(body))
 
 	return s.unmarshalVehiclesSnapshot(body)
 }
@@ -102,6 +97,6 @@ func (s *samsara) unmarshalVehiclesSnapshot(data []byte) ([]*VehiclesData, error
 		v.Longitude = vehicle.GPS.Longitude
 		vehiclesData = append(vehiclesData, &v)
 	}
-	log.Printf("Unmarshalled data: %v", vehiclesData)
+
 	return vehiclesData, nil
 }

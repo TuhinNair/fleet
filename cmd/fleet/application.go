@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"os"
 	"time"
 
@@ -27,7 +26,6 @@ func newApplication(cfg config) (*application, error) {
 	var app application
 	app.logger = jsonlog.New(os.Stdout, jsonlog.LevelInfo)
 
-	app.logger.PrintInfo(fmt.Sprintf("db configuration: %+v", cfg.db), nil)
 	db, err := configureDB(cfg.db)
 	if err != nil {
 		app.logger.PrintFatal(err, nil)
