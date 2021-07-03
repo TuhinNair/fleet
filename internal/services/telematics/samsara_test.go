@@ -1,4 +1,4 @@
-package fleet
+package telematics
 
 import (
 	"os"
@@ -49,8 +49,8 @@ func newSamaraTestService(t *testing.T) *samsara {
 		t.Fatal("Missing samsara base url")
 	}
 	urlSuffixes := make(map[URLName]string)
-	urlSuffixes["vehicles_snapshot"] = os.Getenv("SAMSARA_VEHICLE_STATS_PATH_SUFFIX")
-	if urlSuffixes["vehicles_snapshot"] == "" {
+	urlSuffixes[VehiclesSnapshot] = os.Getenv("SAMSARA_VEHICLE_STATS_PATH_SUFFIX")
+	if urlSuffixes[VehiclesSnapshot] == "" {
 		t.Fatal("missing vehicle_snapshot path suffix")
 	}
 	apiToken := os.Getenv("SAMSARA_TEST_API_TOKEN")

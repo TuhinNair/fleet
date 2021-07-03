@@ -1,4 +1,4 @@
-package fleet
+package telematics
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type URLName string
+var _ FleetDataFetcher = (*samsara)(nil)
 
 type samsara struct {
 	baseURL      string
@@ -50,7 +50,7 @@ func (s *samsara) getRequestWithTimeout(urlName URLName, timeout time.Duration) 
 }
 
 func (s *samsara) VehiclesSnapshot() ([]*VehiclesData, error) {
-	req, cancel, err := s.getRequestWithTimeout("vehicles_snapshot", 30*time.Second)
+	req, cancel, err := s.getRequestWithTimeout(VehiclesSnapshot, 30*time.Second)
 	if err != nil {
 		return nil, err
 	}

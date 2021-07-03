@@ -1,11 +1,15 @@
-package fleet
+package telematics
 
 import (
 	"encoding/json"
 	"time"
 )
 
-var _ FleetDataFetcher = (*samsara)(nil)
+type URLName string
+
+const (
+	VehiclesSnapshot URLName = "vehicle_snapshot"
+)
 
 type FleetDataFetcher interface {
 	VehiclesSnapshot() ([]*VehiclesData, error)
