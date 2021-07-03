@@ -1,0 +1,1 @@
+psql $DATABASE_URL < ./schema/create_vehicles_table.sql

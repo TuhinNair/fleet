@@ -1,3 +1,6 @@
+// +heroku install ./cmd/... .
+// +heroku goVersion go1.16
+
 module github.com/TuhinNair/fleet
 
 go 1.16
