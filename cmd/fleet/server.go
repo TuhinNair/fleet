@@ -28,7 +28,7 @@ func (a *application) mapHandler(w http.ResponseWriter, r *http.Request) {
 	mapURL := a.service.maps.MapURL(markers)
 	htmlImg := `<img src="` + mapURL + `">`
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, err = fmt.Fprintf(w, htmlImg)
+	_, err = fmt.Fprint(w, htmlImg)
 	if err != nil {
 		http.Error(w, "server error", http.StatusInternalServerError)
 		return
