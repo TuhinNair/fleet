@@ -13,19 +13,27 @@ type dbConfig struct {
 	maxIdleTime  string
 }
 type serviceConfig struct {
-	baseURL      string
-	apiToken     string
-	pathSuffixes map[telematics.URLName]string
+	telematics struct {
+		baseURL      string
+		apiToken     string
+		pathSuffixes map[telematics.URLName]string
+	}
+	maps struct {
+		baseURL  string
+		apiToken string
+	}
 }
 type config struct {
 	db       dbConfig
 	services serviceConfig
+	port     string
 }
 
 func loadConfig() config {
 	db := newDBConfig()
 	services := newServicesConfig()
-	return config{db, services}
+	port := ":" + os.Getenv("PORT")
+	return config{db, services, port}
 }
 
 func newDBConfig() dbConfig {
@@ -42,6 +50,7 @@ func newDBConfig() dbConfig {
 }
 
 func newServicesConfig() serviceConfig {
+	var scfg serviceConfig
 	baseURL := os.Getenv("SAMSARA_BASE_URL")
 	if baseURL == "" {
 		panic("missing base api url")
@@ -55,5 +64,19 @@ func newServicesConfig() serviceConfig {
 	if apiToken == "" {
 		panic("missing samsara API token")
 	}
-	return serviceConfig{baseURL, apiToken, pathSuffixes}
+	scfg.telematics.baseURL = baseURL
+	scfg.telematics.pathSuffixes = pathSuffixes
+	scfg.telematics.apiToken = apiToken
+
+	baseURL = os.Getenv("GOOGLE_MAPS_BASE_URL")
+	if baseURL == "" {
+		panic("missing base maps api url")
+	}
+	apiToken = os.Getenv("GOOGLE_MAPS_API_KEY")
+	if apiToken == "" {
+		panic("missing maps API token")
+	}
+	scfg.maps.baseURL = baseURL
+	scfg.maps.apiToken = apiToken
+	return scfg
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func (a *application) fetchVehiclesData() error {
-	serviceData, err := a.service.VehiclesSnapshot()
+	serviceData, err := a.service.telematics.VehiclesSnapshot()
 	if err != nil {
 		return err
 	}

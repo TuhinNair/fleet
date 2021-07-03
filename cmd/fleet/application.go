@@ -8,14 +8,18 @@ import (
 
 	"github.com/TuhinNair/fleet/internal/data"
 	"github.com/TuhinNair/fleet/internal/jsonlog"
+	"github.com/TuhinNair/fleet/internal/services/maps"
 	"github.com/TuhinNair/fleet/internal/services/telematics"
 	_ "github.com/lib/pq"
 )
 
 type application struct {
 	model   data.VehicleModel
-	service telematics.FleetDataFetcher
-	logger  *jsonlog.Logger
+	service struct {
+		telematics telematics.FleetDataFetcher
+		maps       maps.Mapper
+	}
+	logger *jsonlog.Logger
 }
 
 func newApplication(cfg config) (*application, error) {
@@ -28,10 +32,15 @@ func newApplication(cfg config) (*application, error) {
 	}
 
 	app.model = data.NewVehicleModel(db)
-	app.service = telematics.NewFleetDataFetcher(
-		cfg.services.baseURL,
-		cfg.services.apiToken,
-		cfg.services.pathSuffixes,
+	app.service.telematics = telematics.NewFleetDataFetcher(
+		cfg.services.telematics.baseURL,
+		cfg.services.telematics.apiToken,
+		cfg.services.telematics.pathSuffixes,
+	)
+
+	app.service.maps = maps.NewMapper(
+		cfg.services.maps.baseURL,
+		cfg.services.maps.apiToken,
 	)
 
 	err = app.fetchVehiclesData()

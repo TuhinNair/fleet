@@ -8,9 +8,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	app.start()
+	app.start(cfg.port)
 }
 
-func (a *application) start() {
+func (a *application) start(port string) {
 	a.poll(10 * time.Second)
+	err := a.serve(port)
+	if err != nil {
+		a.logger.PrintFatal(err, nil)
+	}
 }

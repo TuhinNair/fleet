@@ -5,4 +5,7 @@ module github.com/TuhinNair/fleet
 
 go 1.16
 
-require github.com/lib/pq v1.10.2 // indirect
+require (
+	github.com/lib/pq v1.10.2 // indirect
+	googlemaps.github.io/maps v1.3.2 // indirect
+)
