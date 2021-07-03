@@ -9,7 +9,8 @@ func (a *application) poll(every time.Duration) {
 			select {
 			case <-run:
 				a.logger.PrintInfo("polling fresh data", nil)
-				a.fetchVehiclesData()
+				err := a.fetchVehiclesData()
+				a.logger.PrintError(err, nil)
 			default:
 				continue
 			}
