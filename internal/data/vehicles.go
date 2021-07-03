@@ -19,6 +19,10 @@ type VehicleModel struct {
 	DB *sql.DB
 }
 
+func NewVehicleModel(db *sql.DB) VehicleModel {
+	return VehicleModel{DB: db}
+}
+
 func (m VehicleModel) GetAll() ([]*Vehicle, error) {
 	query := `
 		SELECT id, name, latitude, longitude, accurate_at, updated_at
@@ -27,7 +31,7 @@ func (m VehicleModel) GetAll() ([]*Vehicle, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	rows, err := m.DB.QueryContext(ctx, query, nil)
+	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +80,7 @@ func (m VehicleModel) Insert(v *Vehicle) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	_, err := m.DB.ExecContext(ctx, query, args)
+	_, err := m.DB.ExecContext(ctx, query, args...)
 	if err != nil {
 		return err
 	}

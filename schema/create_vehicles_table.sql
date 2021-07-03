@@ -1,0 +1,13 @@
+CREATE TABLE
+IF NOT EXISTS vehicles
+(
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    latitude TEXT NOT NULL,
+    longitude TEXT NOT NULL,
+    accurate_at TIMESTAMP
+WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP
+WITH TIME ZONE NOT NULL DEFAULT NOW
+()
+);
