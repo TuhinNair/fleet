@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-var _ FleetDataFetcher = (*samsara)(nil)
-
 type URLName string
 
 type samsara struct {
@@ -25,8 +23,34 @@ func newSamsaraService(baseURL, apiToken string, pathSuffixes map[URLName]string
 	return &samsara{baseURL, pathSuffixes, apiToken, client}
 }
 
+func (s *samsara) endpoint(name URLName) string {
+	suffix, ok := s.pathSuffixes[name]
+	if !ok {
+		// panic here as this is a development error
+		panic("No path suffix exists for the given endpoint name: " + name)
+	}
+	return s.baseURL + suffix
+}
+
+func (s *samsara) do(req *http.Request) (*http.Response, error) {
+	bearer := "Bearer " + s.apiToken
+	req.Header.Add("Authorization", bearer)
+	return s.client.Do(req)
+}
+
+func (s *samsara) getRequestWithTimeout(urlName URLName, timeout time.Duration) (*http.Request, context.CancelFunc, error) {
+	url := s.endpoint(urlName)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, cancel, err
+	}
+	return req, cancel, nil
+}
+
 func (s *samsara) VehiclesSnapshot() ([]*VehiclesData, error) {
-	req, cancel, err := s.getRequest("vehicles_snapshot")
+	req, cancel, err := s.getRequestWithTimeout("vehicles_snapshot", 30*time.Second)
 	if err != nil {
 		return nil, err
 	}
@@ -74,30 +98,4 @@ func (s *samsara) unmarshalVehiclesSnapshot(data []byte) ([]*VehiclesData, error
 		vehiclesData = append(vehiclesData, &v)
 	}
 	return vehiclesData, nil
-}
-
-func (s *samsara) endpoint(name URLName) string {
-	suffix, ok := s.pathSuffixes[name]
-	if !ok {
-		// panic here as this is a development error
-		panic("No path suffix exists for the given endpoint name: " + name)
-	}
-	return s.baseURL + suffix
-}
-
-func (s *samsara) do(req *http.Request) (*http.Response, error) {
-	bearer := "Bearer " + s.apiToken
-	req.Header.Add("Authorization", bearer)
-	return s.client.Do(req)
-}
-
-func (s *samsara) getRequest(urlName URLName) (*http.Request, context.CancelFunc, error) {
-	url := s.endpoint(urlName)
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
-
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
-	if err != nil {
-		return nil, cancel, err
-	}
-	return req, cancel, nil
 }

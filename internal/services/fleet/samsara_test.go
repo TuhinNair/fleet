@@ -10,9 +10,27 @@ func TestSamsaraJSONResponseDecoding(t *testing.T) {
 
 	tests := map[string]func(st *testing.T){
 		"vehicle_snapshot response successfully decodes": func(t *testing.T) {
-			_, err := service.VehiclesSnapshot()
+			vehicles, err := service.VehiclesSnapshot()
 			if err != nil {
 				t.Fatal(err)
+			}
+
+			for _, v := range vehicles {
+				if v.ID == "" {
+					t.Fatal("vehicle ID is empty")
+				}
+				if v.Name == "" {
+					t.Fatal("vehicle name is empty")
+				}
+				if v.Latitude == "" {
+					t.Fatal("vehicle latitude is empty")
+				}
+				if v.Longitude == "" {
+					t.Fatal("vehicle longitude is empty")
+				}
+				if v.AccurateAt.IsZero() {
+					t.Fatal("vehicle data timestamp is zero")
+				}
 			}
 		},
 	}

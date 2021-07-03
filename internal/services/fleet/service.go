@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+var _ FleetDataFetcher = (*samsara)(nil)
+
 type FleetDataFetcher interface {
 	VehiclesSnapshot() ([]*VehiclesData, error)
 }
