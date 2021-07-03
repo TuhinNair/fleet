@@ -13,7 +13,7 @@
 * The database does not store a *stream* of data. In that all existing data is replaced on update. This loss of historical data is avoidable (but not on the heroku free tier).
 * As a one time project I simply used an SQL script to create the required table. A more future-proof approach would possibly include a migration tool. The fields and tables are also versionless in the current implementaion.
 * Bulk/Batch Insert is almost a necessity for this use case and although somewhat trivial to implement now, my initial plan was to version each row (only updating if data values had changed) and so as plans changed (time and sleep being the party poopers) I ended up just leaving the Insert as it is. Both batched inserts and diffed updates would fit this use case well.
-* The application should ideally use a tailored role to access the database but the current implementation simply uses the super user. The constraints on the free tier db combined with the lack of valuable data act as protection. (Ya, I know, but it's been a long day!)
+* The application should ideally use a tailored role to access the database but the current implementation simply uses the default Heroku provided user. (Developer defined roles are a paid feature.)
 
 ### Service
 * I had the choice to use the application memory as a cache but chose to keep the service stateless.
@@ -24,6 +24,7 @@
 * No robust error handling on the web server. For now the application will just return a HTTP 500 when it runs into problems.
 * I know the docs said poll every 10 seconds but I configured it to a 100 seconds to avoid accidentally running up a bill with Heroku.
 * CI/CD. Considering the lifespan for this project I pushed it down the priority list until it finally disappeared.
+* Graceful shutdown, healthchecks, metrics etc. True *production-ready* is still a few steps away.
 
 ### Map
 * I chose to expose a web server to ease reviewer validation. The root path is set to return an image tag with the most recent map.
