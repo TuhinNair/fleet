@@ -28,7 +28,7 @@
 
 ### Map
 * I chose to expose a web server to ease reviewer validation. The root path is set to return an image tag with the most recent map.
-* I realized only later that the static map produced (because it's literally an image, duh!) won't provide tooltips on the pins. (Although the URL is constructed with each pin having an identifying labelW)
+* I realized only later that the static map produced (because it's literally a single png image, duh!) won't provide tooltips on the pins. (Although the URL is constructed with each pin having an identifying labelW)
 
 
 ## Task 3 (Or how I would've done it)
