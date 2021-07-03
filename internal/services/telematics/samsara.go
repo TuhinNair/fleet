@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 )
@@ -35,6 +36,7 @@ func (s *samsara) endpoint(name URLName) string {
 func (s *samsara) do(req *http.Request) (*http.Response, error) {
 	bearer := "Bearer " + s.apiToken
 	req.Header.Add("Authorization", bearer)
+	log.Println("about to do request")
 	return s.client.Do(req)
 }
 
@@ -50,6 +52,7 @@ func (s *samsara) getRequestWithTimeout(urlName URLName, timeout time.Duration) 
 }
 
 func (s *samsara) VehiclesSnapshot() ([]*VehiclesData, error) {
+	log.Println("about to build request")
 	req, cancel, err := s.getRequestWithTimeout(VehiclesSnapshot, 30*time.Second)
 	if err != nil {
 		return nil, err

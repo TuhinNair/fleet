@@ -6,6 +6,7 @@ import (
 )
 
 func (a *application) fetchVehiclesData() error {
+	a.logger.PrintInfo("about to fetch", nil)
 	serviceData, err := a.service.telematics.VehiclesSnapshot()
 	if err != nil {
 		return err
