@@ -1,2 +1,2 @@
-web: bin/fleet
+web: fleet
 release: ./migrate.sh
