@@ -32,7 +32,7 @@
 * With a more intelligent client a push/pull approach would allow real time updates. Websockets, SSE or even just client side polling. 
 
 ## Task 3 (Or how I would've done it)
-* Although task 3 isn't much of an extension in terms of features, productionizing even a few lines of code is time consuming and GCP managed to eat up most of my time (I spent 2 hrs configuring my billing accounts; apparenlty users of indian bank cards have to have separate accounts for billing to GCP in general and the Map APIs in specific).
+* Although task 3 isn't much of an extension in terms of features, productionizing even a few lines of code is time consuming and GCP managed to eat up most of my time (I spent 2 hrs configuring my billing accounts (even for the free tier; which is what I used; apparenlty users of indian bank cards have to have separate accounts for billing to GCP in general and the Map APIs in specific).
 * My first instinct would be to use one of the available packages/extensions for the *Haversine* implementation.
 * After qualifying the vehicles based on the criteria, it would be possible to use the *Samsara* API (https://developers.samsara.com/reference#getvehiclesdriverassignments) to gather driver names. If I'm not wrong drivers are ephemeral relative to a vehicle so caching this data may not be plausible (unless a specific schedule was known; easing invalidation). Cache if that is not the case.
 * Expose an endpoint through our web server to serve the generated CSV file.
