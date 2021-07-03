@@ -69,6 +69,7 @@ func (s *samsara) VehiclesSnapshot() ([]*VehiclesData, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Println("read response body")
 
 	return s.unmarshalVehiclesSnapshot(body)
 }
@@ -100,5 +101,6 @@ func (s *samsara) unmarshalVehiclesSnapshot(data []byte) ([]*VehiclesData, error
 		v.Longitude = vehicle.GPS.Longitude
 		vehiclesData = append(vehiclesData, &v)
 	}
+	log.Printf("Unmarshalled data: %v", vehiclesData)
 	return vehiclesData, nil
 }
