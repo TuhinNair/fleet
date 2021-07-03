@@ -10,7 +10,7 @@ func newGoogleMapsService(baseURL, apiToken string) Mapper {
 }
 
 func (g *googleMaps) MapURL(markers []Marker) string {
-	return g.baseURL + "?size=800x800&key=" + g.apiToken + g.buildMarkerParams(markers)
+	return g.baseURL + "?size=500x500&key=" + g.apiToken + g.buildMarkerParams(markers)
 }
 
 func (g *googleMaps) buildMarkerParams(markers []Marker) string {
