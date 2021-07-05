@@ -31,6 +31,7 @@
 * I chose to expose a web server to ease reviewer validation. The root path is set to return an image tag with the most recent map.
 * I realized only later that the static map produced (because it's literally a single png image, duh!) won't provide tooltips on the pins. (Although the URL is constructed with each pin having an identifying label)
 * With a more intelligent client a push/pull approach would allow real time updates. Websockets, SSE or even just client side polling. 
+* The API key being exposed in the URL is just how the embeddable static map API was designed to be used. For static URL's there's the option of signing each unique url construction but for dynamic URL's a possible solution is to retrieve the image data on the server and then temporarily self host the image. For this project I just followed the Google blog's recommendation of setting restrictive permissions on the key. It currently only allows 100 requests as a maximum. 
 
 ## Task 3 (Or how I would've done it)
 * Although task 3 isn't much of an extension in terms of features, productionizing even a few lines of code is time consuming and GCP managed to eat up most of my time (I spent 2 hrs configuring my billing accounts for the free tier; apparenlty users of indian bank cards have to have separate accounts for billing to GCP in general and the Map APIs in specific).
